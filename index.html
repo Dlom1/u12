@@ -1,200 +1,253 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <link rel="icon" href="icon.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kumpulan Foto dan Video Keluarga Banten U 12</title>
+  <style>
+    body {
+      background-color: #121212; /* Gelap */
+      font-family: Arial, sans-serif;
+      color: #ffffff; /* Warna teks putih */
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kumpulan Foto dan Video Keluarga Banten U 12</title>
-<style>
-  body {
-    background-color: black;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    position: relative;
-  }
-
-  .green-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  .green-line::before,
-  .green-line::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: radial-gradient(circle, rgba(0, 128, 0, 0.6) 0%, rgba(0, 128, 0, 0) 70%);
-  }
-
-  .green-line::before {
-    top: 0;
-  }
-
-  .green-line::after {
-    bottom: 0;
-  }
-  
   .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    color: white;
-    text-align: center;
-  }
-  
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .folder {
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-  }
-  
-  .folder img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .folder::before,
-  .folder::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: radial-gradient(circle, rgba(0, 128, 0, 0.6) 0%, rgba(0, 128, 0, 0) 70%);
-  }
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #333; /* Kotak judul gelap */
+  border-radius: 10px; /* Membuat tepian kotak bulat */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow untuk kotak */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('logo_kamar_u12.png');
+  background-size: 100% auto; /* Menyesuaikan lebar gambar agar sesuai dengan lebar elemen */
+  background-position: right top; /* Mengatur posisi gambar dari kanan atas */
+  background-attachment: fixed; /* Membuat gambar latar tetap diam saat di-scroll */
+}
 
-  .folder::before {
-    top: 0;
-  }
 
-  .folder::after {
-    bottom: 0;
-  }
-</style>
+
+    h1 {
+      text-align: center;
+      padding: 20px; /* Padding yang lebih besar */
+      margin-bottom: 20px; /* Jarak judul ke konten */
+      color: #ffffff; /* Warna teks putih */
+      background-image: linear-gradient(to right, #007bff, #8811AA); /* Gradasi warna */
+      border-radius: 5px; /* Tepi bulat */
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); /* Bayangan */
+      transition: all 0.3s ease-in-out; /* Transisi */
+    }
+
+    h1:hover {
+      transform: scale(1.05); /* Efek zoom saat hover */
+      background-image: linear-gradient(to left, #007bff, #8811AA); /* Gradasi berubah arah */
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Tiga kolom */
+      gap: 15px;
+      justify-content: center; /* Pusatkan jika baris terakhir tidak penuh */
+    }
+
+    .folder {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      border: 2px solid #444; /* Border untuk folder */
+      border-radius: 10px; /* Membuat tepian folder bulat */
+      transition: transform .1s; /* Animasi zoom */
+    }
+
+    .folder:hover {
+      transform: scale(1.05); /* Efek zoom saat hover */
+      border-color: #0088cc; /* Ubah warna border saat hover */
+    }
+
+    .folder img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px 8px 0 0; /* Bulat tepi atas gambar */
+    }
+
+    .folder p {
+      font-weight: bold;
+      font-style: italic;
+      margin: 10px 0; /* Memberi jarak atas bawah teks */
+    }
+
+    a {
+      color: #00bfff; /* Warna tautan */
+      text-decoration: none; /* Hapus garis bawah tautan */
+    }
+
+    a:hover {
+      color: #ff7700; /* Warna tautan saat hover */
+    }
+
+
+    #keterangan {
+  text-align: center;
+  color: #cccccc; /* Warna teks lebih terang */
+  font-size: 13px; /* Ukuran font lebih kecil */
+  margin-bottom: 0px; /* Memberi jarak antara teks dan elemen hitung mundur */
+}
+
+
+    .hitung-mundur {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      font-size: 12px;
+      color: #00ff00; /* Warna teks untuk hitung mundur */
+    }
+  </style>
 </head>
 <body>
-  <div class="green-line"></div>
   <div class="container">
     <h1>Kumpulan Foto dan Video Keluarga Banten U 12</h1>
+ <div id="keterangan">
+      <p>Jika Anda ikut Rombongan Robadbad. Liburan Anda Berkurang:</p>
+    </div>
+    <div class="hitung-mundur" id="hitung-mundur"></div>
+
+
     <div class="gallery">
+      <!-- Contoh folder foto -->
+      
 
+<div class="folder" title="Foto Isbana 2022">
+  <a href="https://drive.google.com/drive/folders/1N8XxAQ4iGtQzH834An1dwLdyXvRPN3ez">
+    <img src="folder_icon.png" alt="Folder">
+    <p>01. Foto Isbana 2022</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1N8XxAQ4iGtQzH834An1dwLdyXvRPN3ez">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">01. Foto Isbana 2022</p>
-    </a>
-  </div>
+<div class="folder" title="Foto Acara Tamatan 2022">
+  <a href="https://drive.google.com/drive/folders/1qAXh9CSl1GxQTvCsjLqKjlCJtTq8iCMo">
+    <img src="folder_icon.png" alt="Folder">
+    <p>02. Foto Acara Tamatan 2022</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1qAXh9CSl1GxQTvCsjLqKjlCJtTq8iCMo">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">02. Foto Acara tamatan 2022</p>
-    </a>
-  </div>
+<div class="folder" title="Foto Rajabiyyah 21-22">
+  <a href="https://drive.google.com/drive/folders/1F_vr-E1nk_BnGXLUAYZAlImN904JzM5Z">
+    <img src="folder_icon.png" alt="Folder">
+    <p>03. Foto Rajabiyyah 21-22</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1F_vr-E1nk_BnGXLUAYZAlImN904JzM5Z">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">03. Foto Rajabiyyah 21-22</p>
-    </a>
-  </div>
+<div class="folder" title="Temu Warga I JWAN (22-23)">
+  <a href="https://drive.google.com/drive/folders/12wjw1W1UTE0_qK4iUeD4ZKwpu8nt5unM">
+    <img src="folder_icon.png" alt="Folder">
+    <p>04. Temu Warga I JWAN (22-23)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/12wjw1W1UTE0_qK4iUeD4ZKwpu8nt5unM">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">04. Temu Warga I JWAN (22-23)</p>
-    </a>
-  </div>
+<div class="folder" title="Temu Warga II JWAN (22-23)">
+  <a href="https://drive.google.com/drive/folders/1Tf3BY7YFC1Ar_AccTdRojj0mWAmJ1s8n">
+    <img src="folder_icon.png" alt="Folder">
+    <p>05. Temu Warga II JWAN (22-23)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1Tf3BY7YFC1Ar_AccTdRojj0mWAmJ1s8n">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">05. Temu Warga II JWAN (22-23)</p>
-    </a>
-  </div>
+<div class="folder" title="Foto Rajabiyyah 22-23">
+  <a href="https://drive.google.com/drive/folders/12gGYyeA6JnLjir2Kg576jUeI_XEGD4MY">
+    <img src="folder_icon.png" alt="Folder">
+    <p>06. Foto Rajabiyyah 22-23</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/12gGYyeA6JnLjir2Kg576jUeI_XEGD4MY">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">06. Foto Rajabiyyah 22-23</p>
-    </a>
-  </div>
+<div class="folder" title="Bukber Kota Serang (2023)">
+  <a href="https://drive.google.com/drive/folders/1DgHsZSWgShKz8Y3g_qAVh8izBkyER0Je">
+    <img src="folder_icon.png" alt="Folder">
+    <p>07. Bukber Kota Serang (2023)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1DgHsZSWgShKz8Y3g_qAVh8izBkyER0Je">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">07. Bukber Kota Serang (2023)</p>
-    </a>
-  </div>
+<div class="folder" title="Foto & Video HBH Kamar U 12 (2023)">
+  <a href="https://drive.google.com/drive/folders/1ktBzv_7qfYnewoZLBnR8vst-v8yHQypZ">
+    <img src="folder_icon.png" alt="Folder">
+    <p>08. Foto & Video HBH Kamar U 12 (2023)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1ktBzv_7qfYnewoZLBnR8vst-v8yHQypZ">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">08. Foto & Video HBH Kamar U 12 (2023)</p>
-    </a>
-  </div>
+<div class="folder" title="Temu Warga I JWAN (23-24)">
+  <a href="https://drive.google.com/drive/folders/1HZ1_dQHXucujIjG-lkKbUE5vrTkyUYZt">
+    <img src="folder_icon.png" alt="Folder">
+    <p>09. Temu Warga I JWAN (23-24)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1HZ1_dQHXucujIjG-lkKbUE5vrTkyUYZt">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">09. Temu Warga I JWAN (23-24)</p>
-    </a>
-  </div>
+<div class="folder" title="Temu Warga II JWAN (23-24)">
+  <a href="https://drive.google.com/drive/folders/1M8dT1GeHGCiHAhk4OPILMphrgFxzyNit">
+    <img src="folder_icon.png" alt="Folder">
+    <p>10. Temu Warga II JWAN (23-24)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1M8dT1GeHGCiHAhk4OPILMphrgFxzyNit">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">10. Temu Warga II JWAN (23-24)</p>
-    </a>
-  </div>
+<div class="folder" title="Rajabiyyah (23-24)">
+  <a href="https://drive.google.com/drive/folders/13Q6nfze-oufqoHuaU0DXaSze3Jvby5vW">
+    <img src="folder_icon.png" alt="Folder">
+    <p>11. Rajabiyyah (23-24)</p>
+  </a>
+</div>
 
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/13Q6nfze-oufqoHuaU0DXaSze3Jvby5vW">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">11. Rajabiyyah (23-24)</p>
-    </a>
-  </div>
+<div class="folder" title="Mumtaz (Tamatan 2024)">
+  <a href="https://drive.google.com/drive/folders/13Q6nfze-oufqoHuaU0DXaSze3Jvby5vW">
+    <img src="folder_icon.png" alt="Folder">
+    <p>12. Mumtaz (Tamatan 2024)</p>
+  </a>
+</div>
 
-
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/13Q6nfze-oufqoHuaU0DXaSze3Jvby5vW">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">12. Mumtaz (tamatan 2024)</p>
-    </a>
-  </div>
-
-  <div class="folder">
-    <a href="https://drive.google.com/drive/folders/1-2ym2zokI1hI3wAFuJvOnjCwfbHfluzY">
-      <img src="folder_icon.png" alt="Folder">
-      <p style="font-weight: bold; color: white; font-style: italic;">13. Sambangan Banten 2023</p>
-    </a>
-  </div>
-
-
+<div class="folder" title="Sambangan Banten 2023">
+  <a href="https://drive.google.com/drive/folders/1-2ym2zokI1hI3wAFuJvOnjCwfbHfluzY">
+    <img src="folder_icon.png" alt="Folder">
+    <p>13. Sambangan Banten 2023</p>
+  </a>
+</div>
 
 
 
-      <!-- Repeat for other folders -->
+      <!-- Duplikasi dan modifikasi <div class="folder"> sesuai kebutuhan -->
     </div>
   </div>
+
+  <script>
+    // Script untuk hitung mundur
+    // Mendapatkan waktu target dalam milidetik
+    var tanggalHitungMundur = new Date("04 24, 2024 12:30:00").getTime();
+    
+    // Fungsi interval untuk mengupdate hitungan mundur setiap detik
+    var x = setInterval(function() {
+      
+      // Mendapatkan waktu sekarang dalam milidetik
+      var sekarang = new Date().getTime();
+      
+      // Menghitung jarak antara waktu target dan waktu sekarang
+      var jarak = tanggalHitungMundur - sekarang;
+      
+      // Menghitung hari, jam, menit, dan detik dari jarak
+      var hari = Math.floor(jarak / (1000 * 60 * 60 * 24));
+      var jam = Math.floor((jarak % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var menit = Math.floor((jarak % (1000 * 60 * 60)) / (1000 * 60));
+      var detik = Math.floor((jarak % (1000 * 60)) / 1000);
+      
+      // Menggabungkan hasil perhitungan menjadi satu string
+      var hitungMundur = hari + " hari " + jam + " jam " + menit + " menit " + detik + " detik ";
+      
+      // Menampilkan hitungan mundur pada elemen dengan id "hitung-mundur"
+      document.getElementById("hitung-mundur").innerHTML = hitungMundur;
+      
+      // Jika waktu target telah terlewati, hentikan interval dan tampilkan pesan
+      if (jarak < 0) {
+        clearInterval(x);
+        document.getElementById("keterangan").innerHTML = "";
+        document.getElementById("hitung-mundur").innerHTML = "Waktu liburan wes entek. Waktune ning Pondok. Doane be dulur. Aje ore kelingan Link iki disimpan mungkin sewaktu-waktu perlu.";
+      }
+    }, 1000); // Interval 1000ms (1 detik)
+</script>
 </body>
 </html>
