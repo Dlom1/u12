@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="icon.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kumpulan Foto dan Video Keluarga Banten U 12</title>
+  <style>
+  /* Kotak transparan utama */
+  .transparent-box {
+    background-color: rgba(0, 0, 0, 0.5); /* Latar belakang transparan */
+    color: white; /* Warna teks */
+    padding: 10px; /* Jarak dalam */
+    border-radius: 15px; /* Tepi bulat */
+    text-align: center; /* Rata tengah konten */
+    max-width: 400px; /* Lebar maksimum kotak */
+    margin: 20px auto; /* Rata tengah secara horizontal dan vertikal */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Bayangan */
+    border: 2px solid white; /* Border putih */
+  }
+
+  /* Slideshow container */
+  .slideshow-container {
+    position: relative; /* Menjadikan posisi container sebagai referensi */
+    width: 100%; /* Lebar penuh sesuai kotak transparan */
+    height: 250px; /* Tinggi slideshow */
+    overflow: hidden; /* Sembunyikan bagian gambar di luar container */
+    border-radius: 15px; /* Tepi bulat sama dengan kotak transparan */
+    margin-bottom: 15px; /* Jarak bawah ke teks */
+  }
+
+  /* Gaya gambar dalam slideshow */
+  .slideshow-container img {
+    position: absolute; /* Semua gambar tumpang tindih di dalam container */
+    top: 50%; /* Posisikan di tengah vertikal */
+    left: 50%; /* Posisikan di tengah horizontal */
+    transform: translate(-50%, -50%); /* Geser gambar agar benar-benar berada di tengah */
+    width: 90%; /* Gambar hanya 90% dari lebar container */
+    height: auto; /* Tinggi otomatis agar proporsi gambar tidak terdistorsi */
+    opacity: 0; /* Gambar disembunyikan secara default */
+    transition: opacity 1s ease, filter 1s ease; /* Efek transisi */
+    filter: blur(10px); /* Efek blur pada gambar */
+  }
+
+  /* Gambar aktif yang ditampilkan */
+  .slideshow-container img.active {
+    opacity: 1; /* Gambar terlihat */
+    filter: blur(0); /* Hilangkan blur */
+  }
+
+
+
+.transparent-box {
+      background-color: rgba(0, 0, 0, 0.5); /* Transparan dengan sedikit latar belakang gelap */
+      color: white; /* Warna teks putih */
+      padding: 1px; /* Jarak di dalam kotak */
+      border-radius: 15px; /* Membuat sudut kotak bulat */
+      text-align: center; /* Menyusun teks di tengah */
+      max-width: 350px; /* Lebar maksimal kotak */
+      margin: 20px auto; /* Menjaga kotak tetap di tengah halaman */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Menambahkan bayangan ringan */
+      border: 2px solid white; /* Tepi putih */
+    }
+header {
+      background-color: #017AFD;
+      padding: 7px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: none;
+      border: none;
+      position: fixed;
+      width: 90%; /* Agar header memenuhi lebar layar */
+      top: 0; /* Menempel di atas */
+      left: 0;
+      z-index: 10; /* Pastikan header berada di atas konten */
+    }
+
+    /* Gambar Logo di Tengah */
+    header .logo {
+      flex: 1;
+      text-align: center;
+    }
+    body {
+      background-color: #121212; /* Gelap */
+      font-family: Arial, sans-serif;
+      color: #ffffff; /* Warna teks putih */
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+  .container {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #333; /* Kotak judul gelap */
+  border-radius: 10px; /* Membuat tepian kotak bulat */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow untuk kotak */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('logo_kamar_u12.png');
+  background-size: 100% auto; /* Menyesuaikan lebar gambar agar sesuai dengan lebar elemen */
+  background-position: right top; /* Mengatur posisi gambar dari kanan atas */
+  background-attachment: fixed; /* Membuat gambar latar tetap diam saat di-scroll */
+}
+
+
+
+    h1 {
+      text-align: center;
+      padding: 20px; /* Padding yang lebih besar */
+      margin-bottom: 20px; /* Jarak judul ke konten */
+      color: #ffffff; /* Warna teks putih */
+      background-image: linear-gradient(to right, #007bff, #8811AA); /* Gradasi warna */
+      border-radius: 5px; /* Tepi bulat */
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); /* Bayangan */
+      transition: all 0.3s ease-in-out; /* Transisi */
+    }
+
+    h1:hover {
+      transform: scale(1.05); /* Efek zoom saat hover */
+      background-image: linear-gradient(to left, #007bff, #8811AA); /* Gradasi berubah arah */
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr); /* Tiga kolom */
+      gap: 15px;
+      justify-content: center; /* Pusatkan jika baris terakhir tidak penuh */
+    }
+
+.folder {
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  border: 2px solid #444; /* Border untuk folder */
+  border-radius: 10px; /* Membuat tepian folder bulat */
+  transition: transform .1s; /* Animasi zoom */
+  width: 90%; /* Mengisi lebar kontainer */
+  height: 8; /* Menyesuaikan tinggi berdasarkan konten */
+  padding: 1px; /* Jarak di dalam folder */
+  margin: 0px 0; /* Memberikan jarak vertikal (atas dan bawah) antar folder */
+margin-left: 13px; /* Menggeser folder sedikit ke kiri */
+}
+
+
+    .folder:hover {
+      transform: scale(1.05); /* Efek zoom saat hover */
+      border-color: #0088cc; /* Ubah warna border saat hover */
+    }
+
+    .folder img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px 8px 0 0; /* Bulat tepi atas gambar */
+    }
+
+    .folder p {
+      font-weight: bold;
+      font-style: italic;
+      margin: 10px 0; /* Memberi jarak atas bawah teks */
+    }
+
+    a {
+      color: #00bfff; /* Warna tautan */
+      text-decoration: none; /* Hapus garis bawah tautan */
+    }
+
+    a:hover {
+      color: #ff7700; /* Warna tautan saat hover */
+
+  </style>
+</head>
+<body>
+    <header style="background-color: #017AFD; padding: 7px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: none; border: none;">
+    <!-- Gambar Logo di Tengah -->
+    <div style="flex: 1; text-align: center;">
+        <img src="logo.png" alt="Logo" style="width: 200px; height: auto; border-radius: 10px;">
+    </div>
+
+    <!-- Gambar Bendera di Kanan -->
+    <div style="text-align: right;">
+        <img src="logo_isbana.png" alt="Indonesia" style="width : 60px; height: 60px; border-radius: 8px; border: 1px solid white;">
+    </div>
+
+</header>
+<body>
+    <div class="gallery">
+      <!-- Contoh folder foto -->
+      
+<p><p>
+
+
+
+
+
+
+
+
+<div class="transparent-box">
+  <!-- Slideshow Foto -->
+  <div class="slideshow-container">
+    <img src="https://i.postimg.cc/vH8vgYqN/image.jpg" alt="Foto 1" class="active">
+<img src="https://i.postimg.cc/B6cxbkx3/image.jpg" alt="Foto 2">
+<img src="https://i.postimg.cc/MH9VbBPr/image.jpg" alt="Foto 3">
+<img src="https://i.postimg.cc/26cS0xYv/image.jpg" alt="Foto 4">
+<img src="https://i.postimg.cc/Gt4hVs3f/image.jpg" alt="Foto 5">
+<img src="https://i.postimg.cc/DZJwYXwM/image.jpg" alt="Foto 6">
+<img src="https://i.postimg.cc/VNHjCnhG/image.jpg" alt="Foto 7">
+<img src="https://i.postimg.cc/L6HnmhCn/image.jpg" alt="Foto 8">
+<img src="https://i.postimg.cc/9M5QKfwX/image.jpg" alt="Foto 9">
+<img src="https://i.postimg.cc/Y9WWZ9rb/image.jpg" alt="Foto 10">
+<img src="https://i.postimg.cc/J41scKkT/image.jpg" alt="Foto 11">
+<img src="https://i.postimg.cc/Pq8JrRgq/image.jpg" alt="Foto 12">
+<img src="https://i.postimg.cc/8kb55W0L/image.jpg" alt="Foto 13">
+<img src="https://i.postimg.cc/gkJY27RP/image.jpg" alt="Foto 14">
+<img src="https://i.postimg.cc/vH8vgYqN/image.jpg" alt="Foto 15">
+<img src="https://i.postimg.cc/3R1TKjxR/image.jpg" alt="Foto 16">
+<img src="https://i.postimg.cc/ZRVGkTwv/image.jpg" alt="Foto 17">
+<img src="https://i.postimg.cc/Vvv3m3hG/image.jpg" alt="Foto 18">
+
+  </div>
+  
+  <p> Web ini memuat dokumentasi foto dan video singkat acara santri Lirboyo asal Banten</p>
+</div>
+
+<!-- Tambahkan JavaScript slideshow -->
+<script>
+    // Ambil semua elemen gambar dalam slideshow
+  const images = document.querySelectorAll('.slideshow-container img');
+  let currentIndex = 0; // Indeks awal untuk gambar pertama
+
+  // Fungsi untuk menampilkan gambar berikutnya
+  function showNextImage() {
+    // Hapus kelas "active" dari gambar saat ini
+    images[currentIndex].classList.remove('active');
+
+    // Pindahkan indeks ke gambar berikutnya (loop ke awal jika sudah di akhir)
+    currentIndex = (currentIndex + 1) % images.length;
+
+    // Tambahkan kelas "active" ke gambar baru
+    images[currentIndex].classList.add('active');
+  }
+
+  // Jalankan fungsi setiap 3 detik
+  setInterval(showNextImage, 3000);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="folder" title="Foto Isbana 2022">
+  <a href="https://drive.google.com/drive/folders/1N8XxAQ4iGtQzH834An1dwLdyXvRPN3ez">
+    <p>📁 01. Foto Isbana 2022</p>
+  </a>
+</div>
+
+<div class="folder" title="Foto Acara Tamatan 2022">
+  <a href="https://drive.google.com/drive/folders/1qAXh9CSl1GxQTvCsjLqKjlCJtTq8iCMo">
+    <p>📁 02. Foto Acara Tamatan 2022</p>
+  </a>
+</div>
+
+
+<div class="folder" title="Foto Rajabiyyah 21-22">
+  <a href="https://drive.google.com/drive/folders/1F_vr-E1nk_BnGXLUAYZAlImN904JzM5Z">
+    <p>📁 03. Foto Rajabiyyah 21-22</p>
+  </a>
+</div>
+
+<div class="folder" title="Temu Warga I JWAN (22-23)">
+  <a href="https://drive.google.com/drive/folders/12wjw1W1UTE0_qK4iUeD4ZKwpu8nt5unM">
+    <p>📁 04. Temu Warga I JWAN (22-23)</p>
+  </a>
+</div>
+
+<div class="folder" title="Temu Warga II JWAN (22-23)">
+  <a href="https://drive.google.com/drive/folders/1Tf3BY7YFC1Ar_AccTdRojj0mWAmJ1s8n">
+    <p>📁 05. Temu Warga II JWAN (22-23)</p>
+  </a>
+</div>
+
+<div class="folder" title="Foto Rajabiyyah 22-23">
+  <a href="https://drive.google.com/drive/folders/12gGYyeA6JnLjir2Kg576jUeI_XEGD4MY">
+    <p>📁 06. Foto Rajabiyyah 22-23</p>
+  </a>
+</div>
+
+<div class="folder" title="Bukber Kota Serang (2023)">
+  <a href="https://drive.google.com/drive/folders/1DgHsZSWgShKz8Y3g_qAVh8izBkyER0Je">
+    <p>📁 07. Bukber Kota Serang (2023)</p>
+  </a>
+</div>
+
+<div class="folder" title="Foto & Video HBH Kamar U 12 (2023)">
+  <a href="https://drive.google.com/drive/folders/1ktBzv_7qfYnewoZLBnR8vst-v8yHQypZ">
+    <p>📁 08. Foto & Video HBH Kamar U 12 (2023)</p>
+  </a>
+</div>
+
+<div class="folder" title="Temu Warga I JWAN (23-24)">
+  <a href="https://drive.google.com/drive/folders/1HZ1_dQHXucujIjG-lkKbUE5vrTkyUYZt">
+    <p>📁 09. Temu Warga I JWAN (23-24)</p>
+  </a>
+</div>
+
+<div class="folder" title="Temu Warga II JWAN (23-24)">
+  <a href="https://drive.google.com/drive/folders/1M8dT1GeHGCiHAhk4OPILMphrgFxzyNit">
+    <p>📁 10. Temu Warga II JWAN (23-24)</p>
+  </a>
+</div>
+
+<div class="folder" title="Rajabiyyah (23-24)">
+  <a href="https://drive.google.com/drive/folders/13Q6nfze-oufqoHuaU0DXaSze3Jvby5vW">
+    <p>📁 11. Rajabiyyah (23-24)</p>
+  </a>
+</div>
+
+<div class="folder" title="Mumtaz (Tamatan 2024)">
+  <a href="https://drive.google.com/drive/folders/1meVzK-yZMDUCVi2Wb3_IEYr8YijUHwFn">
+    <p>📁 12. Mumtaz (Tamatan 2024)</p>
+  </a>
+</div>
+
+<div class="folder" title="Sambangan Banten 2023">
+  <a href="https://drive.google.com/drive/folders/1-2ym2zokI1hI3wAFuJvOnjCwfbHfluzY">
+    <p>📁 13. Sambangan Banten 2023</p>
+  </a>
+</div>
+
+
+      <!-- Duplikasi dan modifikasi <div class="folder"> sesuai kebutuhan -->
+    </div>
+  </div>
+
+</body>
+</html>
