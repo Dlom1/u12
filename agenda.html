@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Mendatang</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the app */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .agenda-late {
+            color: #FF007F; /* Warna pink untuk agenda yang sudah lewat */
+        }
+        .agenda-today {
+            color: #7FFF00; /* Warna hijau terang untuk agenda hari ini */
+            font-weight: bold;
+        }
+        .ellipsis {
+            cursor: pointer;
+        }
+        .options {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #555;
+            border-radius: 5px;
+            padding: 5px;
+            text-align: right;
+            z-index: 10; /* Pastikan menu opsi di atas elemen lain */
+        }
+        .options a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 5px;
+        }
+        .options a:hover {
+            background-color: #666;
+        }
+        /* Style untuk modal */
+        .modal {
+            display: none; /* Sembunyikan modal secara default */
+            position: fixed; /* Tetap di layar */
+            z-index: 100; /* Di atas semua elemen lain */
+            left: 0;
+            top: 0;
+            width: 100%; /* Lebar penuh */
+            height: 100%; /* Tinggi penuh */
+            overflow: auto; /* Aktifkan scroll jika konten terlalu besar */
+            background-color: rgba(0,0,0,0.4); /* Warna latar belakang gelap */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #333;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-buttons .confirm {
+            background-color: #dc2626; /* Merah untuk konfirmasi */
+            color: white;
+        }
+        .modal-buttons .cancel {
+            background-color: #6b7280; /* Abu-abu untuk batal */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-black text-white p-0 m-0">
+
+    <div class="container w-11/12 max-w-md mx-auto my-5 p-5 bg-gray-800 rounded-lg shadow-lg">
+        <h1 class="text-center text-3xl font-bold mb-6 text-blue-400">Catatan dan Agenda</h1>
+
+        <!-- Form Tambah/Edit Agenda -->
+        <form id="agendaForm" class="space-y-4 mb-6">
+            <input type="hidden" id="editId">
+            <div>
+                <label for="tanggal" class="block text-sm font-medium text-gray-300 mb-1">Tanggal</label>
+                <input type="date" id="tanggal" class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+            <div>
+                <label for="agendaIsi" class="block text-sm font-medium text-gray-300 mb-1">Isi Agenda</label>
+                <textarea id="agendaIsi" class="w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white h-24 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+            </div>
+            <button type="submit" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition duration-300 ease-in-out">Tambah Agenda</button>
+        </form>
+
+        <!-- Tampilan Tanggal dan Waktu Real-time -->
+        <div class="text-center mb-6">
+            <h2 id="currentDate" class="text-2xl font-semibold text-green-400"></h2>
+            <h2 id="currentTime" class="text-4xl font-bold text-green-500 mt-2"></h2>
+        </div>
+
+        <!-- Daftar Agenda -->
+        <div id="agendaList" class="space-y-4">
+            <!-- Agenda items will be injected here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <p class="text-lg mb-4">Yakin ingin menghapus agenda ini?</p>
+            <div class="modal-buttons">
+                <button class="confirm" id="confirmDeleteBtn">Hapus</button>
+                <button class="cancel" id="cancelDeleteBtn">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import modul Firebase yang diperlukan
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Variabel global untuk ID aplikasi dan konfigurasi Firebase
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db;
+        let auth;
+        let userId = null;
+        let isAuthReady = false;
+
+        // Inisialisasi Firebase dan autentikasi
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+
+        // Fungsi untuk menampilkan modal konfirmasi
+        function showConfirmModal(message, onConfirm) {
+            const modal = document.getElementById('deleteConfirmModal');
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            const cancelBtn = document.getElementById('cancelDeleteBtn');
+
+            modal.style.display = 'flex'; // Tampilkan modal
+
+            confirmBtn.onclick = () => {
+                onConfirm();
+                modal.style.display = 'none'; // Sembunyikan modal setelah konfirmasi
+            };
+
+            cancelBtn.onclick = () => {
+                modal.style.display = 'none'; // Sembunyikan modal jika dibatalkan
+            };
+
+            // Tutup modal jika mengklik di luar konten modal
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        // Mendengarkan perubahan status autentikasi
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                console.log("User authenticated:", userId);
+            } else {
+                // Jika tidak ada user, coba sign in dengan custom token atau secara anonim
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        userId = auth.currentUser.uid;
+                        console.log("Signed in with custom token:", userId);
+                    } else {
+                        await signInAnonymously(auth);
+                        userId = auth.currentUser.uid;
+                        console.log("Signed in anonymously:", userId);
+                    }
+                } catch (error) {
+                    console.error("Error during authentication:", error);
+                    // Fallback jika autentikasi gagal, gunakan ID acak
+                    userId = crypto.randomUUID();
+                    console.log("Using random user ID:", userId);
+                }
+            }
+            isAuthReady = true;
+            // Setelah autentikasi siap, muat agenda
+            if (userId) {
+                loadAgendas();
+            }
+        });
+
+        // Fungsi untuk memperbarui waktu dan tanggal
+        function updateDateTime() {
+            const now = new Date();
+            const optionsDate = { day: '2-digit', month: 'long', year: 'numeric' };
+            const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+
+            document.getElementById('currentDate').innerText = now.toLocaleDateString('id-ID', optionsDate);
+            document.getElementById('currentTime').innerText = now.toLocaleTimeString('id-ID', optionsTime);
+        }
+
+        // Perbarui waktu setiap detik
+        setInterval(updateDateTime, 1000);
+        // Panggil pertama kali saat halaman dimuat
+        updateDateTime();
+
+        // Fungsi untuk menambahkan atau memperbarui agenda
+        document.getElementById('agendaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!isAuthReady || !userId) {
+                console.error("Authentication not ready. Cannot save agenda.");
+                return;
+            }
+
+            const tanggal = document.getElementById('tanggal').value;
+            const isi = document.getElementById('agendaIsi').value;
+            const editId = document.getElementById('editId').value;
+
+            const agendaData = {
+                tanggal: tanggal,
+                isi: isi,
+                createdAt: new Date().toISOString() // Tambahkan timestamp pembuatan
+            };
+
+            try {
+                if (editId) {
+                    // Update agenda yang sudah ada
+                    const docRef = doc(db, `artifacts/${appId}/users/${userId}/agendas`, editId);
+                    await setDoc(docRef, agendaData, { merge: true });
+                    console.log("Agenda berhasil diperbarui dengan ID:", editId);
+                } else {
+                    // Tambah agenda baru
+                    const newDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/agendas`));
+                    await setDoc(newDocRef, agendaData);
+                    console.log("Agenda berhasil ditambahkan dengan ID:", newDocRef.id);
+                }
+                // Reset form
+                document.getElementById('agendaForm').reset();
+                document.getElementById('editId').value = '';
+                document.querySelector('#agendaForm button[type="submit"]').innerText = 'Tambah Agenda';
+            } catch (error) {
+                console.error("Error saat menyimpan agenda:", error);
+            }
+        });
+
+        // Fungsi untuk memuat agenda dari Firestore secara real-time
+        function loadAgendas() {
+            if (!isAuthReady || !userId) {
+                console.error("Authentication not ready. Cannot load agendas.");
+                return;
+            }
+
+            const agendaCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/agendas`);
+            onSnapshot(agendaCollectionRef, (snapshot) => {
+                const agendas = [];
+                snapshot.forEach((doc) => {
+                    agendas.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Urutkan agenda berdasarkan tanggal
+                agendas.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+
+                renderAgendas(agendas);
+            }, (error) => {
+                console.error("Error fetching agendas:", error);
+            });
+        }
+
+        // Fungsi untuk merender daftar agenda ke DOM
+        function renderAgendas(agendas) {
+            const agendaListDiv = document.getElementById('agendaList');
+            agendaListDiv.innerHTML = ''; // Bersihkan daftar yang ada
+
+            if (agendas.length === 0) {
+                agendaListDiv.innerHTML = '<p class="text-center text-gray-400">Tidak ada agenda.</p>';
+                return;
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set waktu ke awal hari untuk perbandingan
+
+            agendas.forEach((item, index) => {
+                const agendaDate = new Date(item.tanggal);
+                agendaDate.setHours(0, 0, 0, 0); // Set waktu ke awal hari untuk perbandingan
+
+                const diffTime = agendaDate.getTime() - today.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let statusClass = '';
+                let timeStatus = '';
+
+                if (diffDays < 0) {
+                    statusClass = 'agenda-late';
+                    timeStatus = `${Math.abs(diffDays)} hari yang lalu`;
+                } else if (diffDays === 0) {
+                    statusClass = 'agenda-today';
+                    timeStatus = 'Hari ini';
+                } else {
+                    timeStatus = `${diffDays} hari lagi`;
+                }
+
+                const agendaItemDiv = document.createElement('div');
+                agendaItemDiv.className = `agenda-item p-4 mb-3 bg-gray-700 rounded-lg relative shadow-md ${statusClass}`;
+                agendaItemDiv.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-gray-400">No: ${index + 1}</p>
+                            <p class="text-lg font-semibold mb-1">Tanggal: ${new Date(item.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+                            <p class="text-xl font-bold mb-2">Agenda: ${item.isi}</p>
+                            <p class="text-md font-medium">Waktu: ${timeStatus}</p>
+                        </div>
+                        <span class="ellipsis text-2xl text-gray-300 hover:text-white" data-id="${item.id}">&#x2026;</span>
+                        <div id="options-${item.id}" class="options rounded-md">
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-600 rounded-md edit-btn" data-id="${item.id}">Edit</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-600 rounded-md delete-btn" data-id="${item.id}">Hapus</a>
+                        </div>
+                    </div>
+                `;
+                agendaListDiv.appendChild(agendaItemDiv);
+            });
+
+            // Tambahkan event listener untuk tombol ellipsis
+            document.querySelectorAll('.ellipsis').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const id = e.target.dataset.id;
+                    const options = document.getElementById(`options-${id}`);
+                    options.style.display = options.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+
+            // Tambahkan event listener untuk tombol edit
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const id = e.target.dataset.id;
+                    const agendaToEdit = agendas.find(agenda => agenda.id === id);
+                    if (agendaToEdit) {
+                        document.getElementById('editId').value = agendaToEdit.id;
+                        document.getElementById('tanggal').value = agendaToEdit.tanggal;
+                        document.getElementById('agendaIsi').value = agendaToEdit.isi;
+                        document.querySelector('#agendaForm button[type="submit"]').innerText = 'Update Agenda';
+                        // Gulir ke atas form
+                        document.getElementById('agendaForm').scrollIntoView({ behavior: 'smooth' });
+                    }
+                    // Sembunyikan opsi setelah klik
+                    document.getElementById(`options-${id}`).style.display = 'none';
+                });
+            });
+
+            // Tambahkan event listener untuk tombol hapus
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const id = e.target.dataset.id;
+                    showConfirmModal("Yakin ingin menghapus agenda ini?", async () => {
+                        try {
+                            if (!isAuthReady || !userId) {
+                                console.error("Authentication not ready. Cannot delete agenda.");
+                                return;
+                            }
+                            await deleteDoc(doc(db, `artifacts/${appId}/users/${userId}/agendas`, id));
+                            console.log("Agenda berhasil dihapus dengan ID:", id);
+                        } catch (error) {
+                            console.error("Error saat menghapus agenda:", error);
+                        }
+                    });
+                    // Sembunyikan opsi setelah klik
+                    document.getElementById(`options-${id}`).style.display = 'none';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
